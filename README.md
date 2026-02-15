@@ -1,17 +1,20 @@
 # Wingman 🐦 | Tu Copiloto Laboral con IA
 
-![Wingman Preview](public/captura.png)
+![Menú Principal Wingman](public/captura.png)
+*Tu centro de operaciones para la búsqueda de empleo*
 
 **Wingman** es una aplicación inteligente diseñada para revolucionar tu búsqueda de empleo. Integra herramientas avanzadas de Inteligencia Artificial para optimizar tu CV, prepararte para entrevistas y gestionar ofertas de trabajo en un solo lugar.
 
 ## 🚀 Características Principales
 
 ### 📄 Editor de CV Inteligente
+![Editor de CV](public/captura3.png)
 *   **Edición en Tiempo Real**: Visualiza los cambios de tu currículum al instante.
 *   **Estructura JSON**: Gestión de datos robusta y portátil.
 *   **Diseño Profesional**: Plantillas limpias y optimizadas para ATS.
 
 ### 🎙️ Modo Entrevista Inmersivo
+![Modo Entrevista con Paloma](public/captura2.png)
 *   **Simulador de Voz**: Practica entrevistas con un avatar de IA (`Paloma`) que habla y escucha.
 *   **Feedback Instantáneo**: Recibe consejos sobre tus respuestas al momento.
 *   **Contexto Adaptable**: Entrevistas generales o específicas para una oferta de trabajo concreta.
@@ -62,5 +65,3 @@
 3.  Haz Commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`).
 4.  Haz Push a la rama (`git push origin feature/nueva-funcionalidad`).
 5.  Abre un Pull Request.
-
-

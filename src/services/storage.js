@@ -56,17 +56,62 @@ export const storageService = {
     },
 
     // CV (Structured)
-    getCV: () => {
+    // CV (Structured & Multi-CV)
+    getCVs: () => {
         const data = localStorage.getItem(STORAGE_KEYS.CV);
-        return data ? JSON.parse(data) : DEFAULT_CV;
-    },
-    saveCV: (cvData) => {
-        localStorage.setItem(STORAGE_KEYS.CV, JSON.stringify(cvData));
+        if (!data) return [];
+        // Migration: If it's an object (legacy), wrap it in array
+        try {
+            const parsed = JSON.parse(data);
+            if (!Array.isArray(parsed)) {
+                return [{ id: 'default', name: 'Mi Primer CV', lastModified: Date.now(), data: parsed }];
+            }
+            return parsed;
+        } catch (e) {
+            return [];
+        }
     },
 
-    // Legacy CV helper (until we fully migrate)
+    getCVById: (id) => {
+        const cvs = storageService.getCVs();
+        return cvs.find(cv => cv.id === id) || null;
+    },
+
+    saveCV: (id, cvData, name = "Sin título") => {
+        const cvs = storageService.getCVs();
+        const existingIndex = cvs.findIndex(cv => cv.id === id);
+
+        const newCV = {
+            id: id || Date.now().toString(),
+            name: name,
+            lastModified: Date.now(),
+            data: cvData
+        };
+
+        if (existingIndex >= 0) {
+            cvs[existingIndex] = { ...cvs[existingIndex], ...newCV };
+        } else {
+            cvs.push(newCV);
+        }
+
+        localStorage.setItem(STORAGE_KEYS.CV, JSON.stringify(cvs));
+        return newCV.id;
+    },
+
+    deleteCV: (id) => {
+        const cvs = storageService.getCVs().filter(cv => cv.id !== id);
+        localStorage.setItem(STORAGE_KEYS.CV, JSON.stringify(cvs));
+    },
+
+    // Create a new blank CV
+    createCV: (name) => {
+        return storageService.saveCV(Date.now().toString(), DEFAULT_CV, name);
+    },
+
+    // Legacy CV helper (returns the first one or default)
     getCVString: () => {
-        const cv = storageService.getCV();
+        const cvs = storageService.getCVs();
+        const cv = cvs.length > 0 ? cvs[0].data : DEFAULT_CV;
         // Convert Structured Object to String for AI
         return `NOMBRE: ${cv.personalInfo.name}\nRESUMEN: ${cv.summary}\nEXPERIENCIA: ${JSON.stringify(cv.experience)}`;
     }

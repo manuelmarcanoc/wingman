@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getWingmanResponse } from '../../services/ai';
+import TalkingAvatar from './TalkingAvatar';
 import '../../App.css';
 
 function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat', onBack }) {
@@ -57,7 +58,8 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
             setLoading(false);
         };
         startInterview();
-    }, [activeOffer]);
+    }, [activeOffer, cvText, initialMode, offerContext]); // Added missing dependencies
+
 
     // --- VOICE SETUP ---
     useEffect(() => {
@@ -153,18 +155,7 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
 
                 {/* AVATAR AREA */}
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <img
-                        src="/paloma.gif"
-                        alt="Wingman Speaking"
-                        style={{
-                            width: '250px',
-                            height: '250px',
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.2))',
-                            transform: isSpeaking ? 'scale(1.1)' : 'scale(1)',
-                            transition: 'transform 0.2s ease-in-out'
-                        }}
-                    />
+                    <TalkingAvatar isSpeaking={isSpeaking} size="300px" />
                     {/* Visual EQ Circle */}
                     <div style={{
                         width: '30px', height: '30px',
@@ -196,20 +187,54 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
 
     // --- RENDER CHAT MODE ---
     return (
-        <div className="panel-card" style={{ height: '85vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <button className="btn-back" onClick={onBack} style={{ margin: 0, position: 'relative', left: 0, top: 0 }}>⬅ SALIR</button>
+        <div className="panel-card" style={{ height: '85vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', position: 'relative', minHeight: '40px', gap: '20px' }}>
+                <button
+                    className="btn-back"
+                    onClick={onBack}
+                    style={{ position: 'static', margin: 0, transform: 'none' }}
+                >
+                    ⬅ SALIR
+                </button>
                 <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-                    💬 MODO CHAT
+                    MODO CHAT
                     <button onClick={() => setMode('voice')} style={{ marginLeft: '10px', fontSize: '0.8rem', cursor: 'pointer', border: 'none', background: 'transparent', textDecoration: 'underline' }}>
                         (Pasar a Voz)
                     </button>
                 </div>
-                {isSpeaking && <div className="mini-orb">🔊</div>}
+            </div>
+
+            {/* Lamp Post Avatar (Left Side) */}
+            <div className="lamp-post-container" style={{
+                position: 'absolute',
+                top: '220px',
+                left: '-200px', // Adjusted to fit the image
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                zIndex: 50
+            }}>
+                {/* Pigeon sitting on top */}
+                <div style={{ position: 'relative', top: '25px', zIndex: 2 }}>
+                    <TalkingAvatar isSpeaking={loading || isSpeaking} size="140px" />
+                </div>
+
+                {/* Pole Image */}
+                <img
+                    src="/poste.png"
+                    alt="Poste"
+                    style={{
+                        width: '180px', // Adjust width as needed for the image
+                        height: 'auto',
+                        filter: 'drop-shadow(5px 5px 10px rgba(0,0,0,0.3))'
+                    }}
+                />
             </div>
 
             {/* CONTEXT BAR */}
-            <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem' }}>
+            <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', marginRight: '140px' }}> {/* Add margin to avoid widget */}
                 <span>
                     {activeOffer ? `🎯 ${activeOffer.title} @ ${activeOffer.company}` : `💬 Entrevista General`}
                 </span>
@@ -220,13 +245,14 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
                 )}
             </div>
 
-            <div className="chat-window" style={{ flex: 1 }}>
+            <div className="chat-window" style={{ flex: 1, paddingRight: '140px' }}> {/* Add paddingRight so text doesn't go under the widget */}
+
                 {history.map((msg, i) => (
                     <div key={i} className={`msg ${msg.role === 'user' ? 'user-msg' : 'wingman-msg'}`}>
                         {msg.content}
                     </div>
                 ))}
-                {loading && <i>Wingman está pensando...</i>}
+
                 <div ref={chatEndRef} />
             </div>
 
@@ -245,6 +271,12 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
 
                 <button className="btn-send" onClick={handleSendChat} disabled={loading}>➤</button>
             </div>
+            {/* Hide Lamp on very small screens to avoid overlap/overflow */}
+            <style>{`
+                @media (max-width: 1100px) {
+                    .lamp-post-container { display: none !important; }
+                }
+            `}</style>
         </div>
     );
 }

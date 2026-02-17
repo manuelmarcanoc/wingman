@@ -41,6 +41,23 @@ function CVForm({ data, onChange, onAdd, onRemove }) {
                     value={data.personalInfo?.phone || ''}
                     onChange={(e) => onChange('personalInfo', 'phone', e.target.value)}
                 />
+
+                <label style={labelStyle}>Foto de Perfil</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    style={inputStyle}
+                    onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                                onChange('personalInfo', 'photo', reader.result);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
             </div>
 
             {/* --- SUMMARY --- */}

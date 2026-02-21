@@ -1,10 +1,18 @@
 import React from 'react';
+import UniversitySearch from './UniversitySearch';
 
 function CVForm({ data, onChange, onAdd, onRemove }) {
 
     const inputStyle = { width: '100%', padding: '8px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '4px' };
     const sectionStyle = { padding: '20px', borderBottom: '1px solid #eee' };
     const labelStyle = { display: 'block', marginBottom: '5px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' };
+
+    const handleUniversityChange = (val, index) => {
+        // val is { name: "University Name", logo: "https://..." }
+        // We update both school name and the logo
+        onChange('education', 'school', val.name, index);
+        onChange('education', 'schoolLogo', val.logo, index);
+    };
 
     return (
         <div>
@@ -125,7 +133,7 @@ function CVForm({ data, onChange, onAdd, onRemove }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                     <h4 style={{ marginTop: 0, marginBottom: 0 }}>🎓 Educación</h4>
                     <button
-                        onClick={() => onAdd('education', { degree: '', school: '', year: '' })}
+                        onClick={() => onAdd('education', { degree: '', school: '', year: '', schoolLogo: null })}
                         style={{ background: '#3b82f6', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer' }}
                     >
                         +
@@ -144,13 +152,23 @@ function CVForm({ data, onChange, onAdd, onRemove }) {
                             onChange={(e) => onChange('education', 'degree', e.target.value, index)}
                             placeholder="Título (ej. Grado en Ingeniería)"
                         />
-                        <input
-                            type="text"
-                            style={inputStyle}
-                            value={edu.school}
-                            onChange={(e) => onChange('education', 'school', e.target.value, index)}
-                            placeholder="Institución"
-                        />
+
+                        {/* New University Search Component */}
+                        <div style={{ marginBottom: '10px' }}>
+                            <UniversitySearch
+                                value={edu.school}
+                                onChange={(val) => {
+                                    if (typeof val === 'object') {
+                                        handleUniversityChange(val, index);
+                                    } else {
+                                        onChange('education', 'school', val, index);
+                                    }
+                                }}
+                                placeholder="Institución (Busca para auto-logo)"
+                                style={inputStyle}
+                            />
+                        </div>
+
                         <input
                             type="text"
                             style={inputStyle}

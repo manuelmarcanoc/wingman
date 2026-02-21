@@ -4,7 +4,10 @@ import {
     onAuthStateChanged,
     signInWithPopup,
     GoogleAuthProvider,
-    signOut
+    signOut,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    updateProfile
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -39,6 +42,25 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const loginWithEmail = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password);
+    };
+
+    const registerWithEmail = async (email, password, displayName) => {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName });
+        // The onAuthStateChanged listener might not pick up the displayName change immediately for the very first render,
+        // but it will be available on subsequent reloads or if we manually update state (though usually not strictly necessary for simple apps).
+        setCurrentUser({ ...userCredential.user, displayName });
+        return userCredential;
+    };
+
+    const updateUserProfile = async (displayName, photoURL) => {
+        if (!auth.currentUser) throw new Error("No hay usuario activo.");
+        await updateProfile(auth.currentUser, { displayName, photoURL });
+        setCurrentUser({ ...auth.currentUser, displayName, photoURL });
+    };
+
     const logout = () => {
         return signOut(auth);
     };
@@ -46,6 +68,9 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         loginWithGoogle,
+        loginWithEmail,
+        registerWithEmail,
+        updateUserProfile,
         logout
     };
 

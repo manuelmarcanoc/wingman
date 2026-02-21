@@ -1,7 +1,13 @@
+import { auth } from './firebase';
+
 const STORAGE_KEYS = {
     USER: 'wingman_user',
     JOBS: 'wingman_jobs',
     CV: 'wingman_cv_data'
+};
+
+const getStorageKey = (baseKey, user = auth.currentUser) => {
+    return user ? `${baseKey}_${user.uid}` : `${baseKey}_guest`;
 };
 
 // --- MOCK DATA ---
@@ -26,39 +32,44 @@ const DEFAULT_CV = {
 
 export const storageService = {
     // USER
-    getUser: () => {
-        const data = localStorage.getItem(STORAGE_KEYS.USER);
+    getUser: (user = auth.currentUser) => {
+        const key = getStorageKey(STORAGE_KEYS.USER, user);
+        const data = localStorage.getItem(key);
         return data ? JSON.parse(data) : DEFAULT_USER;
     },
-    saveUser: (user) => {
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+    saveUser: (userData, user = auth.currentUser) => {
+        const key = getStorageKey(STORAGE_KEYS.USER, user);
+        localStorage.setItem(key, JSON.stringify(userData));
     },
 
     // JOBS
-    getJobs: () => {
-        const data = localStorage.getItem(STORAGE_KEYS.JOBS);
+    getJobs: (user = auth.currentUser) => {
+        const key = getStorageKey(STORAGE_KEYS.JOBS, user);
+        const data = localStorage.getItem(key);
         if (!data) {
-            localStorage.setItem(STORAGE_KEYS.JOBS, JSON.stringify(DEFAULT_JOBS));
+            localStorage.setItem(key, JSON.stringify(DEFAULT_JOBS));
             return DEFAULT_JOBS;
         }
         return JSON.parse(data);
     },
-    addJob: (job) => {
-        const jobs = storageService.getJobs();
+    addJob: (job, user = auth.currentUser) => {
+        const jobs = storageService.getJobs(user);
         const newJob = { ...job, id: Date.now(), status: "Pendiente" };
         jobs.push(newJob);
-        localStorage.setItem(STORAGE_KEYS.JOBS, JSON.stringify(jobs));
+        const key = getStorageKey(STORAGE_KEYS.JOBS, user);
+        localStorage.setItem(key, JSON.stringify(jobs));
         return newJob;
     },
-    updateJobStatus: (id, status) => {
-        const jobs = storageService.getJobs().map(j => j.id === id ? { ...j, status } : j);
-        localStorage.setItem(STORAGE_KEYS.JOBS, JSON.stringify(jobs));
+    updateJobStatus: (id, status, user = auth.currentUser) => {
+        const jobs = storageService.getJobs(user).map(j => j.id === id ? { ...j, status } : j);
+        const key = getStorageKey(STORAGE_KEYS.JOBS, user);
+        localStorage.setItem(key, JSON.stringify(jobs));
     },
 
-    // CV (Structured)
     // CV (Structured & Multi-CV)
-    getCVs: () => {
-        const data = localStorage.getItem(STORAGE_KEYS.CV);
+    getCVs: (user = auth.currentUser) => {
+        const key = getStorageKey(STORAGE_KEYS.CV, user);
+        const data = localStorage.getItem(key);
         if (!data) return [];
         // Migration: If it's an object (legacy), wrap it in array
         try {
@@ -72,13 +83,13 @@ export const storageService = {
         }
     },
 
-    getCVById: (id) => {
-        const cvs = storageService.getCVs();
+    getCVById: (id, user = auth.currentUser) => {
+        const cvs = storageService.getCVs(user);
         return cvs.find(cv => cv.id === id) || null;
     },
 
-    saveCV: (id, cvData, name = "Sin título") => {
-        const cvs = storageService.getCVs();
+    saveCV: (id, cvData, name = "Sin título", user = auth.currentUser) => {
+        const cvs = storageService.getCVs(user);
         const existingIndex = cvs.findIndex(cv => cv.id === id);
 
         const newCV = {
@@ -94,23 +105,25 @@ export const storageService = {
             cvs.push(newCV);
         }
 
-        localStorage.setItem(STORAGE_KEYS.CV, JSON.stringify(cvs));
+        const key = getStorageKey(STORAGE_KEYS.CV, user);
+        localStorage.setItem(key, JSON.stringify(cvs));
         return newCV.id;
     },
 
-    deleteCV: (id) => {
-        const cvs = storageService.getCVs().filter(cv => cv.id !== id);
-        localStorage.setItem(STORAGE_KEYS.CV, JSON.stringify(cvs));
+    deleteCV: (id, user = auth.currentUser) => {
+        const cvs = storageService.getCVs(user).filter(cv => cv.id !== id);
+        const key = getStorageKey(STORAGE_KEYS.CV, user);
+        localStorage.setItem(key, JSON.stringify(cvs));
     },
 
     // Create a new blank CV
-    createCV: (name) => {
-        return storageService.saveCV(Date.now().toString(), DEFAULT_CV, name);
+    createCV: (name, user = auth.currentUser) => {
+        return storageService.saveCV(Date.now().toString(), DEFAULT_CV, name, user);
     },
 
     // Legacy CV helper (returns the first one or default)
-    getCVString: () => {
-        const cvs = storageService.getCVs();
+    getCVString: (user = auth.currentUser) => {
+        const cvs = storageService.getCVs(user);
         const cv = cvs.length > 0 ? cvs[0].data : DEFAULT_CV;
         // Convert Structured Object to String for AI
         return `NOMBRE: ${cv.personalInfo.name}\nRESUMEN: ${cv.summary}\nEXPERIENCIA: ${JSON.stringify(cv.experience)}`;

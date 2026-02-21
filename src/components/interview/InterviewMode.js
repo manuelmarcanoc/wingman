@@ -22,10 +22,12 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
     useEffect(() => { historyRef.current = history; }, [history]);
     useEffect(() => { modeRef.current = mode; }, [mode]);
 
-    // Construct context string
-    const offerContext = activeOffer
-        ? `PUESTO: ${activeOffer.title} en ${activeOffer.company}. DESC: ${activeOffer.description}`
-        : "ENTREVISTA GENERAL (Soft Skills, trayectoria, ambiciones). No hay puesto específico.";
+    // Construct context string - Memoized to prevent effects re-running
+    const offerContext = React.useMemo(() => {
+        return activeOffer
+            ? `PUESTO: ${activeOffer.title} en ${activeOffer.company}. DESC: ${activeOffer.description}`
+            : "ENTREVISTA GENERAL (Soft Skills, trayectoria, ambiciones). No hay puesto específico.";
+    }, [activeOffer]);
 
     // --- HELPER: SEND MESSAGE DIRECTLY ---
     const sendDirectMessage = async (text) => {
@@ -47,8 +49,17 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
         setLoading(false);
     };
 
+    const speak = React.useCallback((text) => {
+        if (!synthesisRef.current) return;
+        synthesisRef.current.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = handleSpeechEnd;
+        synthesisRef.current.speak(utterance);
+    }, []); // Empty dependencies as we use refs/cancel
+
     // --- INIT ---
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const startInterview = async () => {
             setLoading(true);
@@ -58,7 +69,8 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
             setLoading(false);
         };
         startInterview();
-    }, [activeOffer, cvText, initialMode, offerContext]); // Added missing dependencies
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cvText, offerContext]); // Only triggers when context or CV change
 
 
     // --- VOICE SETUP ---
@@ -101,16 +113,6 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
                 } catch (e) { console.log("Mic auto-start error or already started"); }
             }, 500); // Small delay to avoid conflict
         }
-    };
-
-    const speak = (text) => {
-        if (!synthesisRef.current) return;
-        synthesisRef.current.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'es-ES';
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = handleSpeechEnd;
-        synthesisRef.current.speak(utterance);
     };
 
     const toggleListen = () => {

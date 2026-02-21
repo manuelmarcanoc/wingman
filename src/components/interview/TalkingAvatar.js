@@ -8,7 +8,7 @@ function TalkingAvatar({ isSpeaking, size = '150px' }) {
         if (isSpeaking) {
             interval = setInterval(() => {
                 setFrame(prev => prev === 1 ? 2 : 1);
-            }, 150); // Toggle every 150ms
+            }, 250); // Toggle every 250ms for a more natural pace
         } else {
             setFrame(2); // Reset to closed beak (assuming frame 1 is open)
         }

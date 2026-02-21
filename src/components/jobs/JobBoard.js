@@ -21,7 +21,7 @@ function JobBoard({ onSelectOffer, onBack }) {
     return (
         <div className="panel-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2>📂 GESTIÓN DE OFERTAS (Manuel API)</h2>
+                <h2>📂 GESTIÓN DE OFERTAS</h2>
                 <button className="btn-pixel" onClick={() => setShowForm(!showForm)}>
                     {showForm ? 'CANCELAR' : '+ SUBIR OFERTA'}
                 </button>

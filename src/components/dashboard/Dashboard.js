@@ -1,42 +1,91 @@
 import React from 'react';
 import '../../App.css';
+import { MessageCircle, Mic, Sparkles, FolderOpen, FileEdit } from 'lucide-react';
 
-function Dashboard({ onSelectMode }) {
+function CloudButton({ id, icon, title, desc, mode, floatClass, tourClass, backgroundImage, onAction }) {
+    const handleClick = () => {
+        onAction(mode);
+    };
 
     return (
-        <div className="clouds-dashboard">
-
-            <div className="cloud-btn float-1" onClick={() => onSelectMode('interview')} style={{ backgroundImage: "url('/nube.png')" }}>
-                <span className="cloud-icon">💬</span>
-                <div className="cloud-title">Entrevista</div>
-                <div className="cloud-desc">Chat Texto</div>
-            </div>
-
-            <div className="cloud-btn float-3" onClick={() => onSelectMode('voice')} style={{ backgroundImage: "url('/nube.png')" }}>
-                <span className="cloud-icon">🎙️</span>
-                <div className="cloud-title">Modo Voz</div>
-                <div className="cloud-desc">Hablar en vivo</div>
-            </div>
-
-            <div className="cloud-btn float-2" onClick={() => onSelectMode('cv-fix')} style={{ backgroundImage: "url('/nube.png')" }}>
-                <span className="cloud-icon">✨</span>
-                <div className="cloud-title">Mejorar CV</div>
-                <div className="cloud-desc">Revisión IA</div>
-            </div>
-
-            <div className="cloud-btn float-4" onClick={() => onSelectMode('jobs')} style={{ backgroundImage: "url('/nube.png')" }}>
-                <span className="cloud-icon">📂</span>
-                <div className="cloud-title">Ofertas</div>
-                <div className="cloud-desc">Gestión</div>
-            </div>
-
-            <div className="cloud-btn float-1" onClick={() => onSelectMode('create-cv')} style={{ backgroundImage: "url('/nube.png')" }}>
-                <span className="cloud-icon">📝</span>
-                <div className="cloud-title">Editor CV</div>
-                <div className="cloud-desc">Nuevo (Hi-Fi)</div>
-            </div>
+        <div
+            className={`cloud-btn ${floatClass} ${tourClass}`}
+            onClick={handleClick}
+            style={{ backgroundImage }}
+        >
+            <span className="cloud-icon" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', zIndex: 1 }}>
+                {icon}
+            </span>
+            <div className="cloud-title" style={{ position: 'relative', zIndex: 1 }}>{title}</div>
+            <div className="cloud-desc" style={{ position: 'relative', zIndex: 1 }}>{desc}</div>
         </div>
     );
 }
 
-export default Dashboard;
+export default function Dashboard({ onSelectMode }) {
+
+    return (
+        <div className="clouds-dashboard">
+
+            <CloudButton
+                id="cloud-1"
+                mode="interview"
+                title="Entrevista"
+                desc="Chat Texto"
+                icon={<MessageCircle size={36} color="#1e3a8a" />}
+                floatClass="float-1"
+                tourClass="tour-interview"
+                backgroundImage="url('/nube.png')"
+                onAction={onSelectMode}
+            />
+
+            <CloudButton
+                id="cloud-2"
+                mode="voice"
+                title="Modo Voz"
+                desc="Hablar en vivo"
+                icon={<Mic size={36} color="#1e3a8a" />}
+                floatClass="float-3"
+                tourClass="tour-voice"
+                backgroundImage="url('/nube.png')"
+                onAction={onSelectMode}
+            />
+
+            <CloudButton
+                id="cloud-3"
+                mode="cv-fix"
+                title="Mejorar CV"
+                desc="Revisión IA"
+                icon={<Sparkles size={36} color="#1e3a8a" />}
+                floatClass="float-2"
+                tourClass="tour-cv-fix"
+                backgroundImage="url('/nube.png')"
+                onAction={onSelectMode}
+            />
+
+            <CloudButton
+                id="cloud-4"
+                mode="jobs"
+                title="Ofertas"
+                desc="Gestión"
+                icon={<FolderOpen size={36} color="#1e3a8a" />}
+                floatClass="float-4"
+                tourClass="tour-jobs"
+                backgroundImage="url('/nube.png')"
+                onAction={onSelectMode}
+            />
+
+            <CloudButton
+                id="cloud-5"
+                mode="create-cv"
+                title="Editor CV"
+                desc="Nuevo (Hi-Fi)"
+                icon={<FileEdit size={36} color="#1e3a8a" />}
+                floatClass="float-1"
+                tourClass="tour-create-cv"
+                backgroundImage="url('/nube.png')"
+                onAction={onSelectMode}
+            />
+        </div>
+    );
+}

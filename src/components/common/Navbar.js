@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { HelpCircle, Zap, Sun, Moon } from 'lucide-react';
 
-function Navbar({ onNavigate }) {
-    const { currentUser, loginWithGoogle, logout } = useAuth();
+function Navbar({ onNavigate, onStartTutorial, isDarkMode, toggleDarkMode, onOpenAuth, onOpenProfile, isGuest }) {
+    const { currentUser, logout } = useAuth();
+
+    // Auto-redirect to dashboard (Landing Page) if logged out while inside a protected step
+    useEffect(() => {
+        if (!currentUser && !isGuest) {
+            onNavigate('dashboard');
+        }
+    }, [currentUser, isGuest, onNavigate]);
 
     return (
         <nav style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '15px 30px',
+            padding: '20px 5%',
             background: 'transparent', // Let the sky show through
             position: 'relative',
             zIndex: 1000,
@@ -37,34 +45,76 @@ function Navbar({ onNavigate }) {
                 </h1>
             </div>
 
-            {/* Simulated Desktop Links (Hidden on small screens if we had responsive, but simple for now) */}
-            <div style={{ display: 'flex', gap: '30px' }}>
-                {['INICIO', 'OFERTAS'].map(link => (
-                    <span
-                        key={link}
-                        onClick={() => link === 'INICIO' ? onNavigate('dashboard') : link === 'OFERTAS' ? onNavigate('jobs') : alert('Próximamente')}
-                        style={{
-                            cursor: 'pointer',
-                            color: 'white',
-                            fontFamily: "'VT323', monospace",
-                            fontSize: '1.5rem',
-                            textShadow: '2px 2px 0px rgba(0,0,0,0.2)',
-                            borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={e => e.target.style.borderBottom = '2px solid white'}
-                        onMouseLeave={e => e.target.style.borderBottom = 'transparent'}
-                    >
-                        {link}
-                    </span>
-                ))}
-            </div>
+            {/* Simulated Desktop Links */}
+            {(currentUser || isGuest) && (
+                <div className="tour-nav-links" style={{ display: 'flex', gap: '30px' }}>
+                    {['INICIO', 'OFERTAS', 'MIS CVS'].map(link => (
+                        <span
+                            key={link}
+                            onClick={() => {
+                                if (link === 'INICIO') {
+                                    onNavigate('dashboard');
+                                } else {
+                                    if (link === 'OFERTAS') onNavigate('jobs');
+                                    else if (link === 'MIS CVS') onNavigate('cv-manager');
+                                    else alert('Próximamente');
+                                }
+                            }}
+                            style={{
+                                cursor: 'pointer',
+                                color: 'white',
+                                fontFamily: "'VT323', monospace",
+                                fontSize: '1.5rem',
+                                textShadow: '2px 2px 0px rgba(0,0,0,0.2)',
+                                borderBottom: '2px solid transparent'
+                            }}
+                            onMouseEnter={e => e.target.style.borderBottom = '2px solid white'}
+                            onMouseLeave={e => e.target.style.borderBottom = 'transparent'}
+                        >
+                            {link}
+                        </span>
+                    ))}
+                </div>
+            )}
 
             {/* Auth Area - Retro Buttons */}
             <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                {/* Dark Mode Toggle */}
+                <button
+                    onClick={toggleDarkMode}
+                    style={{
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'white', padding: '5px', borderRadius: '50%',
+                        transition: 'transform 0.5s ease',
+                        transform: isDarkMode ? 'rotate(-360deg)' : 'rotate(0deg)'
+                    }}
+                    title={isDarkMode ? "Modo Día" : "Modo Noche"}
+                >
+                    {isDarkMode ? <Sun size={32} /> : <Moon size={32} />}
+                </button>
+
+                <div
+                    onClick={onStartTutorial}
+                    style={{
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        padding: '10px',
+                        borderRadius: '50%',
+                        border: '2px solid white',
+                        backdropFilter: 'blur(5px)',
+                    }}
+                    title="Iniciar Tutorial"
+                >
+                    <HelpCircle color="white" size={24} />
+                </div>
 
 
                 {currentUser ? (
-                    <div style={{
+                    <div className="tour-profile" style={{
                         display: 'flex', alignItems: 'center', gap: '15px',
                         background: 'rgba(255, 255, 255, 0.2)',
                         padding: '5px 15px',
@@ -73,8 +123,11 @@ function Navbar({ onNavigate }) {
                         backdropFilter: 'blur(5px)'
                     }}>
                         <button
-                            onClick={() => alert("🚀 PLAN WINGMAN GOLD 🚀\n\n- Entrevistas Ilimitadas\n- Análisis de CV Avanzado\n- +20 Plantillas Premium\n\n¡Próximamente!")}
+                            onClick={() => onNavigate('upgrade')}
                             style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '5px',
                                 background: 'linear-gradient(45deg, #facc15, #ca8a04)',
                                 border: 'none',
                                 borderBottom: '4px solid #854d0e',
@@ -90,22 +143,31 @@ function Navbar({ onNavigate }) {
                                 marginRight: '10px'
                             }}
                         >
-                            ⚡ MEJORAR PLAN
+                            <Zap size={18} fill="#422006" /> MEJORAR PLAN
                         </button>
 
-                        <img
-                            src={currentUser.photoURL}
-                            alt="User"
-                            style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid white' }}
-                        />
-                        <span style={{
-                            fontSize: '1.2rem',
-                            color: 'white',
-                            fontFamily: "'VT323', monospace",
-                            textShadow: '1px 1px 0px rgba(0,0,0,0.5)'
-                        }}>
-                            {currentUser.displayName.split(' ')[0]}
-                        </span>
+                        <div
+                            onClick={onOpenProfile}
+                            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '5px', borderRadius: '10px', transition: 'background 0.2s' }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                            title="Ajustes de Perfil"
+                        >
+                            <img
+                                src={currentUser.photoURL || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + (currentUser.email || 'guest')}
+                                alt="User"
+                                style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid white' }}
+                            />
+                            <span style={{
+                                fontSize: '1.2rem',
+                                color: 'white',
+                                fontFamily: "'VT323', monospace",
+                                textShadow: '1px 1px 0px rgba(0,0,0,0.5)'
+                            }}>
+                                {(currentUser.displayName || 'Piloto').split(' ')[0]}
+                            </span>
+                        </div>
+
                         <button
                             onClick={logout}
                             style={{
@@ -126,7 +188,7 @@ function Navbar({ onNavigate }) {
                 ) : (
                     <>
                         <button
-                            onClick={loginWithGoogle}
+                            onClick={() => onOpenAuth('login')}
                             style={{
                                 background: 'white',
                                 border: 'none',
@@ -143,7 +205,7 @@ function Navbar({ onNavigate }) {
                             Login
                         </button>
                         <button
-                            onClick={loginWithGoogle}
+                            onClick={() => onOpenAuth('register')}
                             style={{
                                 background: '#f97316',
                                 border: 'none',

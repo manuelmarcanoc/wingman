@@ -39,7 +39,7 @@ function CVManager({ onSelectCV, onBack }) {
     };
 
     return (
-        <div className="cv-manager-container" style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="cv-manager-container" style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
             {/* Header Improved */}
             <div style={{
                 display: 'flex',
@@ -47,43 +47,55 @@ function CVManager({ onSelectCV, onBack }) {
                 alignItems: 'center',
                 marginBottom: '50px',
                 borderBottom: '2px solid rgba(255,255,255,0.3)',
-                paddingBottom: '20px'
+                paddingBottom: '20px',
+                width: '100%',
+                gap: '20px'
             }}>
-                <button
-                    onClick={onBack}
-                    className="btn-back"
-                    style={{ position: 'static', margin: 0, transform: 'none' }}
-                >
-                    ⬅ Volver
-                </button>
+                {/* Columna Izquierda */}
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+                    <button
+                        onClick={onBack}
+                        className="btn-back"
+                        style={{ position: 'static', margin: 0, transform: 'none' }}
+                    >
+                        ⬅ Volver
+                    </button>
+                </div>
 
-                <h2 style={{
-                    margin: 0,
-                    fontSize: '2.5rem',
-                    fontFamily: "'VT323', monospace",
-                    color: 'white',
-                    textShadow: '2px 2px 0px rgba(0,0,0,0.2)'
-                }}>
-                    MIS CURRÍCULUMS
-                </h2>
-
-                <button
-                    onClick={handleCreate}
-                    style={{
-                        background: '#3b82f6',
+                {/* Columna Central */}
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+                    <h2 style={{
+                        margin: 0,
+                        fontSize: '2.5rem',
+                        fontFamily: "'VT323', monospace",
                         color: 'white',
-                        border: 'none',
-                        borderBottom: '4px solid #1e40af',
-                        padding: '10px 25px',
-                        borderRadius: '10px',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                        fontSize: '1.2rem',
-                        fontFamily: "'VT323', monospace"
-                    }}
-                >
-                    + CREAR NUEVO
-                </button>
+                        textShadow: '2px 2px 0px rgba(0,0,0,0.2)',
+                        textAlign: 'center'
+                    }}>
+                        MIS CURRÍCULUMS
+                    </h2>
+                </div>
+
+                {/* Columna Derecha */}
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                    <button
+                        onClick={handleCreate}
+                        style={{
+                            background: '#3b82f6',
+                            color: 'white',
+                            border: 'none',
+                            borderBottom: '4px solid #1e40af',
+                            padding: '10px 25px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '1.2rem',
+                            fontFamily: "'VT323', monospace"
+                        }}
+                    >
+                        + CREAR NUEVO
+                    </button>
+                </div>
             </div>
 
             {/* Horizontal Scroll of CVs */}

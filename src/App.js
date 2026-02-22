@@ -117,7 +117,7 @@ function App() {
           isDarkMode={isDarkMode}
           toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
           onOpenAuth={openAuthModal}
-          onOpenProfile={() => setShowProfileModal(true)}
+          onOpenProfile={() => alert('¡El perfil de usuario estará disponible próximamente!')}
           isGuest={isGuest}
         />
 

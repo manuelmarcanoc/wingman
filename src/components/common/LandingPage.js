@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
+
 import { FileEdit, Bot, Cloud } from 'lucide-react';
 
 function LandingPage({ onLogin, onOpenAuth }) {

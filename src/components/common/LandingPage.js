@@ -3,7 +3,6 @@ import { useAuth } from '../../context/AuthContext';
 import { FileEdit, Bot, Cloud } from 'lucide-react';
 
 function LandingPage({ onLogin, onOpenAuth }) {
-    const { loginWithGoogle } = useAuth();
 
     return (
         <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text)' }}>

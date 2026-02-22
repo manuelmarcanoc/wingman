@@ -12,7 +12,6 @@ import LandingPage from './components/common/LandingPage';
 import Navbar from './components/common/Navbar';
 import Tutorial from './components/common/Tutorial';
 import AuthModal from './components/common/AuthModal';
-import ProfileModal from './components/common/ProfileModal';
 import UpgradePlan from './components/common/UpgradePlan';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -29,7 +28,6 @@ function App() {
   const [runTutorial, setRunTutorial] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false); // New Dark Mode State
   const [showAuthModal, setShowAuthModal] = useState(false); // Auth Modal State
-  const [showProfileModal, setShowProfileModal] = useState(false); // Profile Modal State
   const [authModalMode, setAuthModalMode] = useState('login'); // 'login' or 'register'
 
   const openAuthModal = (mode = 'login') => {

@@ -125,8 +125,8 @@ export const storageService = {
     const key = getStorageKey(STORAGE_KEYS.JOBS, user)
     const data = localStorage.getItem(key)
     if (!data) {
-      localStorage.setItem(key, JSON.stringify(DEFAULT_JOBS))
-      return DEFAULT_JOBS
+      localStorage.setItem(key, JSON.stringify([]))
+      return []
     }
     return JSON.parse(data)
   },

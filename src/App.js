@@ -63,7 +63,7 @@ function AppInner() {
 
     if (mode === 'jobs') {
       setStep('jobs')
-    } else if (mode === 'create-cv') {
+    } else if (mode === 'create-cv' || mode === 'cv-manager') {
       setStep('cv-manager')
     } else if (mode === 'create-cv-questions') {
       setStep('cv-questions')

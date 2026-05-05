@@ -12,10 +12,6 @@ const getStorageKey = (baseKey, user = genericGuest) => {
 }
 
 // --- MOCK DATA ---
-const DEFAULT_JOBS = [
-  { id: 1, title: 'Frontend Dev', company: 'TechCorp', status: 'Entrevista', description: 'React developer needed.' },
-  { id: 2, title: 'UX Designer', company: 'Studio', status: 'Pendiente', description: 'Design cool interfaces.' },
-]
 
 const DEFAULT_USER = {
   name: 'Usuario Demo',

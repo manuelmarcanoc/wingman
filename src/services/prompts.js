@@ -61,7 +61,7 @@ Estructura de la conclusión:
 4. Veredicto Final (¿Pasaría o no la entrevista? Razonado brevemente)
 `,
 
-  conclusion_user: ({ cvText, offerText, historyText } = {}) => `CV:\n${cvText || '(sin CV)'}\n\nOferta:\n${offerText || '(sin oferta)'}\n\Transcripción de la Entrevista:\n${historyText || '(sin historial)'}\n`,
+  conclusion_user: ({ cvText, offerText, historyText } = {}) => `CV:\n${cvText || '(sin CV)'}\n\nOferta:\n${offerText || '(sin oferta)'}\n\nTranscripción de la Entrevista:\n${historyText || '(sin historial)'}\n`,
 
   match_system: ({ language = 'es' } = {}) => `Eres un experto en selección de personal y análisis ATS.
 Analiza la compatibilidad entre el CV del candidato y la oferta de trabajo.

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
-import { MessageCircle, Mic, Sparkles, FolderOpen, FileEdit, HelpCircle } from 'lucide-react';
+import { MessageCircle, Mic, FolderOpen, FileEdit, HelpCircle } from 'lucide-react';
 
 const FEATURES = [
   {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { storageService } from './services/storage'
 import { offersService } from './services/offers'
@@ -83,10 +83,7 @@ function AppInner() {
     setStep('cv-editor')
   }
 
-  const handleSelectOffer = (offer) => {
-    setActiveOffer(offer)
-    setStep('interview')
-  }
+
 
   const [pendingQuestionnaireResult, setPendingQuestionnaireResult] = useState(null)
   const [showTemplatePicker, setShowTemplatePicker] = useState(false)

@@ -185,7 +185,12 @@ app.post('/api/gemini', async (req, res) => {
   }
 })
 
-const port = Number(process.env.PORT || 5001)
-app.listen(port, () => {
-  console.log(`[server] listening on http://localhost:${port}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+  const port = Number(process.env.PORT || 5001)
+  app.listen(port, () => {
+    console.log(`[server] listening on http://localhost:${port}`)
+  })
+}
+
+export default app
+

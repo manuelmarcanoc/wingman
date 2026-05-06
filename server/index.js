@@ -1,9 +1,10 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import { GoogleGenAI } from '@google/genai'
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { GoogleGenAI } = require('@google/genai');
+const path = require('path');
 
-dotenv.config({ path: new URL('./.env', import.meta.url) })
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 if (process.env.NODE_ENV !== 'production') {
   const key = process.env.GEMINI_API_KEY || ''
@@ -192,5 +193,5 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-export default app
+module.exports = app
 

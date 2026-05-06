@@ -107,6 +107,9 @@ export const getAnswerFeedback = async (question, answer, cvText, offerText, { l
 }
 
 export const getWingmanResponse = async (cvText, offerText, history, { language = 'es' } = {}) => {
+  // FAST INITIAL LOAD: No need to query Gemini for the very first greeting
+  if (!history || history.length === 0) return fallbackFirstQuestion({ offerText })
+
   try {
     const gemini = await geminiRespond({ cvText, offerText, history, language })
     if (gemini) return gemini
@@ -116,7 +119,7 @@ export const getWingmanResponse = async (cvText, offerText, history, { language 
   }
 
   // Fallback: always return something useful
-  if (!history || history.length === 0) return fallbackFirstQuestion({ offerText })
+
 
   const lastUserMsg = [...history].reverse().find(m => m.role === 'user')?.content
   if (!lastUserMsg) return fallbackFirstQuestion({ offerText })

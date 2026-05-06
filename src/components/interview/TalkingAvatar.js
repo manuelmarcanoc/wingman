@@ -18,11 +18,14 @@ function TalkingAvatar({ isSpeaking, size = '150px' }) {
 
     return (
         <img
-            src={`/entrevista${frame}.png`}
+            src={`/paloma-hablando${frame}.png`}
             alt="Wingman Avatar"
             style={{
                 width: size,
                 height: size,
+                minHeight: size,
+                minWidth: size,
+                display: 'block',
                 objectFit: 'contain',
                 filter: 'drop-shadow(0 5px 15px rgba(0,0,0,0.1))'
             }}

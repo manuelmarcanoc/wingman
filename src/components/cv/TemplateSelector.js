@@ -1,18 +1,19 @@
 import React from 'react'
+import { FileText, AlignLeft, Monitor, Briefcase, Palette, LayoutTemplate, Moon, LayoutGrid, Terminal } from 'lucide-react'
 
 const templates = [
   // Free Templates
-  { id: 'modern', name: 'Moderno', color: '#3b82f6', icon: '📄', isPro: false },
-  { id: 'minimalist', name: 'Minimalista', color: '#10b981', icon: '📝', isPro: false },
-  { id: 'pixel', name: 'Pixel Art', color: '#f97316', icon: '👾', isPro: false },
-  { id: 'executive', name: 'Ejecutivo', color: '#1e40af', icon: '👔', isPro: false },
-  { id: 'creative', name: 'Creativo', color: '#06b6d4', icon: '🎨', isPro: false },
+  { id: 'modern', name: 'Moderno', color: '#3b82f6', icon: <FileText size={28} strokeWidth={1.5} />, isPro: false },
+  { id: 'minimalist', name: 'Minimalista', color: '#10b981', icon: <AlignLeft size={28} strokeWidth={1.5} />, isPro: false },
+  { id: 'pixel', name: 'Pixel Art', color: '#f97316', icon: <Monitor size={28} strokeWidth={1.5} />, isPro: false },
+  { id: 'executive', name: 'Ejecutivo', color: '#1e40af', icon: <Briefcase size={28} strokeWidth={1.5} />, isPro: false },
+  { id: 'creative', name: 'Creativo', color: '#06b6d4', icon: <Palette size={28} strokeWidth={1.5} />, isPro: false },
 
   // Pro Templates
-  { id: 'pro-editorial', name: 'Editorial', color: '#475569', icon: '📸', isPro: true },
-  { id: 'pro-dark', name: 'Oscuro', color: '#1e293b', icon: '🦇', isPro: true },
-  { id: 'pro-border', name: 'Vanguardia', color: '#6366f1', icon: '🟦', isPro: true },
-  { id: 'pro-y2k', name: 'Y2K Win98', color: '#d946ef', icon: '💾', isPro: true },
+  { id: 'pro-editorial', name: 'Editorial', color: '#475569', icon: <LayoutTemplate size={28} strokeWidth={1.5} />, isPro: true },
+  { id: 'pro-dark', name: 'Oscuro', color: '#1e293b', icon: <Moon size={28} strokeWidth={1.5} />, isPro: true },
+  { id: 'pro-border', name: 'Vanguardia', color: '#6366f1', icon: <LayoutGrid size={28} strokeWidth={1.5} />, isPro: true },
+  { id: 'pro-y2k', name: 'Y2K Win98', color: '#d946ef', icon: <Terminal size={28} strokeWidth={1.5} />, isPro: true },
 ]
 
 function TemplateSelector({ selectedTemplate, onSelect }) {
@@ -51,7 +52,7 @@ function TemplateSelector({ selectedTemplate, onSelect }) {
               boxShadow: selectedTemplate === tpl.id ? `0 5px 15px ${tpl.color}40` : 'none',
             }}
           >
-            <span style={{ fontSize: '2rem' }}>{tpl.icon}</span>
+            <span style={{ color: selectedTemplate === tpl.id ? tpl.color : '#94a3b8', display: 'flex' }}>{tpl.icon}</span>
             <span
               style={{
                 fontSize: '0.8rem',

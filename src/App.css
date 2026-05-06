@@ -720,3 +720,97 @@ select:focus {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* =========================================================
+   RESPONSIVE MOBILE STYLES (Max Width: 768px)
+   ========================================================= */
+@media (max-width: 768px) {
+  /* Contenedor principal */
+  .app-content {
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  /* Navbar adjustments */
+  nav {
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 10px !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .tour-nav-links {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+  }
+  
+  .tour-nav-links span {
+    font-size: 1.1rem !important;
+  }
+
+  .tour-profile {
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Header adjustments */
+  .header-title {
+    font-size: 2.2rem;
+  }
+  
+  .header-gif {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Tarjetas y Paneles (CV, Entrevista, Login) */
+  .panel-card {
+    padding: 20px !important;
+    border-radius: 20px !important;
+    width: 100% !important;
+    border-width: 2px !important;
+  }
+
+  /* Nubes Dashboard (fallback por si acaso) */
+  .clouds-dashboard {
+    gap: 15px;
+  }
+  
+  .cloud-btn {
+    width: 100%;
+    height: 120px;
+  }
+
+  /* Tablón de ofertas */
+  .job-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Modo Entrevista */
+  .chat-window {
+    padding-right: 10px !important; /* Reset inline padding */
+    height: 50vh !important;
+  }
+  
+  /* Controles del chat (micrófono, input, enviar) */
+  .controls-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .controls-area button, 
+  .controls-area textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ocultar el poste de la paloma en móvil para que no tape el chat */
+  .lamp-post-container {
+    display: none !important;
+  }
+}
+

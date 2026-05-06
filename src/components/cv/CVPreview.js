@@ -111,9 +111,9 @@ function ProY2KTemplate({ data }) {
                     <div style={{ width: '30%' }}>
                         <h2 style={{ margin: '0 0 10px 0', fontSize: '28px', color: '#1e3a8a' }}>CONTACTO</h2>
                         <div style={{ background: '#fbcfe8', border: '3px solid #1e3a8a', padding: '15px', borderRadius: '10px' }}>
-                            <div style={{ fontSize: '16px', marginBottom: '10px' }}>📞 {data.personalInfo?.phone || "(55) 1234 5678"}</div>
-                            <div style={{ fontSize: '16px', marginBottom: '10px', wordBreak: 'break-all' }}>✉️ {data.personalInfo?.email || "holamundo@email.com"}</div>
-                            <div style={{ fontSize: '16px' }}>🌐 {data.personalInfo?.website || "www.miweb.com"}</div>
+                            <div style={{ fontSize: '16px', marginBottom: '10px' }}>TEL: {data.personalInfo?.phone || "(55) 1234 5678"}</div>
+                            <div style={{ fontSize: '16px', marginBottom: '10px', wordBreak: 'break-all' }}>EMAIL: {data.personalInfo?.email || "holamundo@email.com"}</div>
+                            <div style={{ fontSize: '16px' }}>WEB: {data.personalInfo?.website || "www.miweb.com"}</div>
                         </div>
                     </div>
 

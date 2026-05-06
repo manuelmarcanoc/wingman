@@ -373,34 +373,20 @@ function InterviewMode({ cvText, activeOffer, onClearOffer, initialMode = 'chat'
         </div>
       </div>
 
-      {/* Lamp Post Avatar (Left Side) */}
+      {/* Floating Avatar (Left Side) */}
       <div
         className='lamp-post-container'
         style={{
           position: 'absolute',
           top: '220px',
-          left: '-200px', // Adjusted to fit the image
+          left: '-160px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           zIndex: 50,
         }}
       >
-        {/* Pigeon sitting on top */}
-        <div style={{ position: 'relative', top: '25px', zIndex: 2 }}>
-          <TalkingAvatar isSpeaking={loading || isSpeaking} size='140px' />
-        </div>
-
-        {/* Pole Image */}
-        <img
-          src='/poste.png'
-          alt='Poste'
-          style={{
-            width: '180px', // Adjust width as needed for the image
-            height: 'auto',
-            filter: 'drop-shadow(5px 5px 10px rgba(0,0,0,0.3))',
-          }}
-        />
+        <TalkingAvatar isSpeaking={loading || isSpeaking} size='140px' />
       </div>
 
       {/* CONTEXT BAR */}
